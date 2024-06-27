@@ -2,16 +2,17 @@ server:
   port: 8084
   servlet:
     context-path: /api/v1
+
 spring:
   application:
     name: helpmeiud
   # conexión a base de datos
   datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/helpme_iud
     username: root
     password:
   # generar tablas con codigo java
   jpa:
     hibernate:
-      hbm2ddl:
-        dd-auto: update
+      ddl-auto: update
