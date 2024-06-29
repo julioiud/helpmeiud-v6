@@ -1,5 +1,6 @@
 package co.edu.iudigital.helpmeiud.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,12 +8,13 @@ import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
-@Table(name = "roles")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@Table(name = "roles")
 public class Role implements Serializable {
 
     static final long serialVersionUID = 1L;
@@ -26,4 +28,10 @@ public class Role implements Serializable {
 
     @Column
     String descripcion;
+
+    // bidireccional
+    // Opcional
+   /* @ManyToMany(mappedBy = "roles")
+    @JsonBackReference
+    List<Usuario> usuarios;*/
 }
