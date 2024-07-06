@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface IDelitoService { // Que voy a hacer
 
+    // TODO: DELITOS A DTO
+
     Delito crearDelito(Delito delito) throws RestException;
 
     Delito actualizarDelitoPorID(Long id, Delito delito) throws RestException;
