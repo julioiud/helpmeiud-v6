@@ -1,3 +1,5 @@
+USE helpme_iud;
+
 -- ROLES
 INSERT INTO roles (id, nombre, descripcion)
 VALUES (1, 'ADMIN', 'Usuario administrador');
