@@ -2,6 +2,10 @@ server:
   port: 8084
   servlet:
     context-path: /api/v1
+  #files
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
 
 spring:
   application:
@@ -18,3 +22,30 @@ spring:
       ddl-auto: update
     show-sql: true
     defer-datasource-initialization: true
+
+  # Envio de Email
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: CORREO_GMAIL_AQUI
+    password: CONTRASEÑA_AQUI
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+#spring security
+security:
+  jwt:
+    client-service: HelpmeIUD
+    password-service: 123456
+    scope-read: read
+    scope-write: write
+    grant-password: password
+    grant-refresh: refresh_token
+    token-validity-seconds: 3600
+    refresh-validity-seconds: 3600
+
+

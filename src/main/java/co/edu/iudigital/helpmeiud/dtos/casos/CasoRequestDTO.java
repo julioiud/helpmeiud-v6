@@ -7,13 +7,16 @@ import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
 @Builder
-public class CasoRequestDTO {
+public class CasoRequestDTO implements Serializable {
+
+    static final long serialVersionUID = 1L;
 
     LocalDateTime fechaHora; // cuando ocurrió
 

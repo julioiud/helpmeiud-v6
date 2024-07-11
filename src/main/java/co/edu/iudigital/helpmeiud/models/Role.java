@@ -19,6 +19,13 @@ public class Role implements Serializable {
 
     static final long serialVersionUID = 1L;
 
+    public Role(){
+    }
+
+    public Role(Long id) {
+        this.id = id;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;

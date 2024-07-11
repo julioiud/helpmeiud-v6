@@ -17,6 +17,7 @@ import co.edu.iudigital.helpmeiud.utils.CasoMapper;
 import co.edu.iudigital.helpmeiud.utils.Messages;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -61,7 +62,23 @@ public class CasoServiceImpl implements ICasoService {
 
     @Override
     public List<CasoResponseDTO> consultarCasosVisibles() throws RestException {
-        return null;
+        log.info("consultarCasosVisibles CasoServiceImpl");
+        try{
+            final List<Caso> casos = casoRepository.findAllByVisibleTrue();
+            final List<CasoResponseDTO> casoResponseDTOList =
+                    casoMapper.toCasoResponseDTOList(casos);
+            return casoResponseDTOList;
+        }catch (Exception e) {
+            log.error("Error Consultando casos: {}",e.getMessage());
+            throw new InternalServerErrorException(
+                    ErrorDto.builder()
+                            .error("Error General")
+                            .status(500)
+                            .message(e.getMessage())
+                            .date(LocalDateTime.now())
+                            .build()
+            );
+        }
     }
 
     @Override
@@ -111,9 +128,10 @@ public class CasoServiceImpl implements ICasoService {
             casoEntity.setRmiUrl(caso.getRmiUrl());
             casoEntity.setUsuario(usuarioDB);
             casoEntity.setDelito(delitoBD);
+
             casoEntity = casoRepository.save(casoEntity);
             return casoMapper.toCasoResponseDTO(casoEntity);
-        }catch (Exception e) {
+        } catch (Exception e) {
             log.error("Error Consultando casos: {}",e.getMessage());
             throw new InternalServerErrorException(
                     ErrorDto.builder()
@@ -127,7 +145,35 @@ public class CasoServiceImpl implements ICasoService {
     }
 
     @Override
-    public Boolean visibilizar(Boolean visible, Long id) throws RestException {
-        return null;
+    public Boolean visibilizar(final Boolean visible, final Long id) throws RestException {
+        log.info("visibilizar CasoServiceImpl");
+        Caso casoBD = casoRepository.findById(id)
+                .orElseThrow(() ->
+                        new NotFoundException(
+                                ErrorDto.builder()
+                                        .error(Messages.NO_ENCONTRADO)
+                                        .message("Caso No existe")
+                                        .status(HttpStatus.NOT_FOUND.value())
+                                        .date(LocalDateTime.now())
+                                        .build())
+                );
+        try{
+            casoBD.setVisible(visible);
+            casoBD = casoRepository.saveAndFlush(casoBD);
+            if(casoBD != null) {
+                return true;
+            }
+            return false;
+        }catch (Exception e) {
+            log.error("Error Actualizado caso: {}",e.getMessage());
+            throw new InternalServerErrorException(
+                    ErrorDto.builder()
+                            .error("Error General")// TODO: CONSTANTE
+                            .status(500)
+                            .message("Error al intentar actualizar")// TODO: CONSTANTE
+                            .date(LocalDateTime.now())
+                            .build()
+            );
+        }
     }
 }

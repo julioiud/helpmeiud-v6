@@ -1,10 +1,9 @@
 package co.edu.iudigital.helpmeiud.repositories;
 
-import co.edu.iudigital.helpmeiud.models.Usuario;
+import co.edu.iudigital.helpmeiud.models.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface IUsuarioRepository extends JpaRepository<Usuario, Long> {
-    Usuario findByUsername(String username);
+public interface IRoleRepository extends JpaRepository<Role, Long> {
 }

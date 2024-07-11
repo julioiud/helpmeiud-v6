@@ -10,8 +10,9 @@ import java.util.List;
 @Repository // ambiguo
 public interface ICasoRepository extends JpaRepository<Caso, Long> {
 
-    @Query("UPDATE Caso c SET c.visible= ?1 WHERE c.id = ?2") // JPQL
-    Boolean setVisible(Boolean visible, Long id);
+    // TODO: REVISAR PORQUE NO FUNCIONA
+    /*@Query("UPDATE Caso c SET c.visible = ?1 WHERE c.id = ?2") // JPQL
+    int setVisible(Boolean visible, Long id);*/
 
    //@Query("SELECT c FROM Caso c WHERE c.usuario.username = :username")
     List<Caso> findAllByUsuarioUsername(/*@Param("username")*/ String username);
