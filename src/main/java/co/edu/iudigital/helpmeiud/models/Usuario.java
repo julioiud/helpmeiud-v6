@@ -48,7 +48,7 @@ public class Usuario implements Serializable {
     @Column
     String image;
 
-    @ManyToMany(fetch = FetchType.LAZY) //EAGER
+    @ManyToMany(fetch = FetchType.EAGER) //EAGER
     @JoinTable(
             name = "roles_usuarios",
             joinColumns = {@JoinColumn(name = "usuarios_id")},

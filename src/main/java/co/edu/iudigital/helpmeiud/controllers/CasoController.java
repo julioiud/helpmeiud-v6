@@ -8,6 +8,7 @@ import co.edu.iudigital.helpmeiud.services.ifaces.ICasoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Casos Controller", description = "Controlador para gestión de casos")
 @RestController
 @RequestMapping("/casos")
 @Slf4j
@@ -76,7 +78,7 @@ public class CasoController {
     @PostMapping
     public ResponseEntity<CasoResponseDTO> create(
             @RequestBody CasoRequestDTO caso
-    ) throws RestException {
+    ) throws RestException { // TODO: IMPLEMENTAR Authorization para registrar caso con la persona que esté autenticada
         log.info("Ejecutando create de CasoController");
         return ResponseEntity
                 .status(HttpStatus.CREATED)

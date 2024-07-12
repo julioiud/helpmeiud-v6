@@ -6,6 +6,8 @@ import co.edu.iudigital.helpmeiud.services.ifaces.IDelitoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,15 +16,17 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+@Tag(name = "Delitos Controller", description = "Controlador para gestión de delitos")
 @RestController
 @RequestMapping("/delitos")
-//@Api(value = "/delitos", tags = {"Delitos"})
 public class DelitoController {
 
     // TODO: USAR DTOS ???
     @Autowired
     private IDelitoService delitoService;
 
+
+    @SecurityRequirement(name = "Authorization")
     @ApiResponses(
             value = {
                @ApiResponse(responseCode = "400", description = "Bad Request"),
