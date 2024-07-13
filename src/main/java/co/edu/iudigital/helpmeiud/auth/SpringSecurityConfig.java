@@ -2,6 +2,8 @@ package co.edu.iudigital.helpmeiud.auth;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -22,8 +24,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  *
  */
 @Configuration
-@EnableGlobalMethodSecurity(securedEnabled = true)//para usar el @Secured
+//@EnableGlobalMethodSecurity(securedEnabled = true)//para usar el @Secured
+@EnableGlobalMethodSecurity(prePostEnabled = true) // PARA pRE Y Post Authorize
 @EnableWebSecurity
+@EnableAutoConfiguration(
+	exclude = SecurityAutoConfiguration.class
+)
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired

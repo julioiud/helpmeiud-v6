@@ -4,7 +4,7 @@ package co.edu.iudigital.helpmeiud.exceptions;
  * Exception de Capa de Backend en el Rest
  * 
  */
-public class InternalServerErrorException extends RestException {
+public class InternalServerErrorException extends RestException { //500
 
     private static final long serialVersionUID = 1L;
     private String codigoError;

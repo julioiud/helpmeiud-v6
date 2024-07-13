@@ -4,7 +4,6 @@ import co.edu.iudigital.helpmeiud.dtos.usuarios.UsuarioRequestDTO;
 import co.edu.iudigital.helpmeiud.dtos.usuarios.UsuarioResponseDTO;
 import co.edu.iudigital.helpmeiud.exceptions.BadRequestException;
 import co.edu.iudigital.helpmeiud.exceptions.ErrorDto;
-import co.edu.iudigital.helpmeiud.exceptions.NotFoundException;
 import co.edu.iudigital.helpmeiud.exceptions.RestException;
 import co.edu.iudigital.helpmeiud.models.Role;
 import co.edu.iudigital.helpmeiud.models.Usuario;
@@ -12,7 +11,6 @@ import co.edu.iudigital.helpmeiud.repositories.IRoleRepository;
 import co.edu.iudigital.helpmeiud.repositories.IUsuarioRepository;
 import co.edu.iudigital.helpmeiud.services.ifaces.IEmailService;
 import co.edu.iudigital.helpmeiud.services.ifaces.IUsuarioService;
-import co.edu.iudigital.helpmeiud.utils.Messages;
 import co.edu.iudigital.helpmeiud.utils.UsuarioMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +21,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -106,8 +102,12 @@ public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
         return null;
     }
 
+    @Override
+    public UsuarioResponseDTO Actualizar(String username) throws RestException {
+        return null;
+    }
 
-    @Transactional(readOnly = true)
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Usuario usuario = usuarioRepository.findByUsername(username);

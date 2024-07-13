@@ -57,6 +57,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(e.getErrorDto(), HttpStatus.UNAUTHORIZED);
     }
 
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler({ForbiddenException.class})
+    public ResponseEntity<ErrorDto> getUnauthorizedException(ForbiddenException e) {
+        log.info(e.getErrorDto().getMessage());
+        return new ResponseEntity<>(e.getErrorDto(), HttpStatus.FORBIDDEN);
+    }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             org.springframework.web.bind.MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status,

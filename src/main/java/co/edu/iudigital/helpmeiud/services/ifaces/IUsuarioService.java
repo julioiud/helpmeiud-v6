@@ -18,4 +18,6 @@ public interface IUsuarioService {
     Usuario findByUsername(String username);
 
     UsuarioResponseDTO consultarPorUsername(String username) throws RestException;
+
+    UsuarioResponseDTO Actualizar(String username) throws RestException;
 }

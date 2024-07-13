@@ -1,15 +1,17 @@
 package co.edu.iudigital.helpmeiud.services.impl;
 
-import co.edu.iudigital.helpmeiud.exceptions.ErrorDto;
-import co.edu.iudigital.helpmeiud.exceptions.InternalServerErrorException;
-import co.edu.iudigital.helpmeiud.exceptions.NotFoundException;
-import co.edu.iudigital.helpmeiud.exceptions.RestException;
+import co.edu.iudigital.helpmeiud.exceptions.*;
 import co.edu.iudigital.helpmeiud.models.Delito;
+import co.edu.iudigital.helpmeiud.models.Usuario;
 import co.edu.iudigital.helpmeiud.repositories.IDelitoRepository;
+import co.edu.iudigital.helpmeiud.repositories.IUsuarioRepository;
 import co.edu.iudigital.helpmeiud.services.ifaces.IDelitoService;
 import co.edu.iudigital.helpmeiud.utils.Messages;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,10 +25,37 @@ public class DelitoServiceImpl implements IDelitoService { // como lo voy a hace
     @Autowired
     private IDelitoRepository delitoRepository;
 
+    @Autowired
+    private IUsuarioRepository usuarioRepository;
+
     @Override
-    public Delito crearDelito(Delito delito) throws RestException {
+    public Delito crearDelito(Delito delito, Authentication authentication) throws RestException {
         log.info("crearDelito DelitoService");
+        String username = authentication.getName();
+        /*
+        TODO: IMPLEMENTAR @Secured y QUITAR LA FORMA MANUAL
+        List<GrantedAuthority> authorities = (List<GrantedAuthority>) authentication.getAuthorities();
+        boolean isAdmin = false;
+        for(GrantedAuthority grantedAuthority: authorities) {
+            if("ADMIN".equals(grantedAuthority.getAuthority())) {
+                isAdmin = true;
+                break;
+            }
+        }
+        if(!isAdmin) {
+            throw new ForbiddenException(
+                    ErrorDto.builder()
+                            .error("No permitido")
+                            .status(HttpStatus.FORBIDDEN.value())
+                            .message("Recurso no permitido")
+                            .build()
+            );
+        }
+         END TODO: IMPLEMENTAR @Secured y QUITAR LA FORMA MANUAL*/
+
         try{
+            Usuario usuario = usuarioRepository.findByUsername(username);
+            delito.setUsuario(usuario);
             return delitoRepository.save(delito);
         }catch (Exception e) {
             throw new InternalServerErrorException(

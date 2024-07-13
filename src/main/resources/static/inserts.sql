@@ -2,10 +2,10 @@ USE helpme_iud;
 
 -- ROLES
 INSERT INTO roles (id, nombre, descripcion)
-VALUES (1, 'ADMIN', 'Usuario administrador');
+VALUES (1, 'ROLE_ADMIN', 'Usuario administrador');
 
 INSERT INTO roles (id, nombre, descripcion)
-VALUES (2, 'USER', 'Usuario normal');
+VALUES (2, 'ROLE_USER', 'Usuario normal');
 
 -- USUARIOS
 INSERT INTO usuarios

@@ -11,10 +11,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @Tag(name = "Delitos Controller", description = "Controlador para gestión de delitos")
 @RestController
@@ -25,7 +26,7 @@ public class DelitoController {
     @Autowired
     private IDelitoService delitoService;
 
-
+    @PreAuthorize("hasRole('ADMIN')")
     @SecurityRequirement(name = "Authorization")
     @ApiResponses(
             value = {
@@ -41,12 +42,16 @@ public class DelitoController {
     )
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public ResponseEntity<Delito> save(@Valid @RequestBody Delito delito) throws RestException {
+    public ResponseEntity<Delito> save(
+            @Valid @RequestBody Delito delito, Authentication authentication
+    ) throws RestException {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(delitoService.crearDelito(delito));
+                .body(delitoService.crearDelito(delito, authentication));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "Authorization")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "400", description = "Bad Request"),
@@ -71,6 +76,9 @@ public class DelitoController {
                 .body(delitoService.actualizarDelitoPorID(id, delito));
     }
 
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "Authorization")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "400", description = "Bad Request"),
@@ -93,6 +101,9 @@ public class DelitoController {
     }
 
 
+    // TODO: COLOCAR DTOS Y HABILITAR EL PREAUTHORIZE
+    //@PreAuthorize("hasRole('USER')")
+    @SecurityRequirement(name = "Authorization")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "400", description = "Bad Request"),
@@ -116,6 +127,7 @@ public class DelitoController {
                 .body(delitoService.consultarDelitoPorID(id));
     }
 
+
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "401", description = "Unauthorized"),
@@ -128,7 +140,7 @@ public class DelitoController {
     )
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public ResponseEntity<List<Delito>> index() throws RestException {
+    public ResponseEntity<Object> index() throws RestException {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(delitoService.consultarDelitos());

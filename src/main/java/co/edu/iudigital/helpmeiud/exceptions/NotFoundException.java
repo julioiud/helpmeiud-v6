@@ -4,7 +4,7 @@ package co.edu.iudigital.helpmeiud.exceptions;
  * Exception de NotFound en el Rest
  * 
  */
-public class NotFoundException extends RestException {
+public class NotFoundException extends RestException { // 404
 
     private static final long serialVersionUID = 1L;
 
