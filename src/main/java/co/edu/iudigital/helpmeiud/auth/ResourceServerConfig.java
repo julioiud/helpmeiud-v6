@@ -37,7 +37,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 		//se parte desde rutas más específicas a mas generales o genéricas
 		// urls abiertas sin autenticación ni autorización
 		// pero lo haremos más sencillo con anotaciones @Secured
-		.antMatchers(HttpMethod.GET, "/delitos").permitAll()
+		//.antMatchers(HttpMethod.GET, "/delitos").permitAll()
 		
 		.antMatchers(HttpMethod.POST, "/usuarios/signup**").permitAll()
 		.antMatchers(HttpMethod.OPTIONS, "/usuarios/signup**").permitAll()	

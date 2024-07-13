@@ -25,7 +25,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  */
 @Configuration
 //@EnableGlobalMethodSecurity(securedEnabled = true)//para usar el @Secured
-@EnableGlobalMethodSecurity(prePostEnabled = true) // PARA pRE Y Post Authorize
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true) // PARA pRE Y Post Authorize
 @EnableWebSecurity
 @EnableAutoConfiguration(
 	exclude = SecurityAutoConfiguration.class
@@ -89,14 +89,16 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
     	 web.ignoring()
-         .antMatchers(HttpMethod.GET, "/**")
+        // .antMatchers( HttpMethod.GET, "/**")
          .antMatchers("/app/**/*.{js,html}")
          .antMatchers("/i18n/**")
          .antMatchers("/content/**")
          .antMatchers("/h2-console/**")
+		 .antMatchers("/swagger-ui/**")
          .antMatchers("/swagger-ui/index.html")
          .antMatchers("/swagger-ui.html")
-         .antMatchers("/v2/api-docs")
+         .antMatchers("/v3/api-docs")
+		 .antMatchers("/v3/api-docs/**")
          .antMatchers("/test/**");
     }
 

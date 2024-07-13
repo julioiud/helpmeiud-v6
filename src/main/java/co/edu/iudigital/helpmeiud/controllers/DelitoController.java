@@ -8,15 +8,20 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
+@Slf4j
 @Tag(name = "Delitos Controller", description = "Controlador para gestión de delitos")
 @RestController
 @RequestMapping("/delitos")
@@ -100,10 +105,7 @@ public class DelitoController {
         delitoService.eliminarDelitoPorID(id);
     }
 
-
-    // TODO: COLOCAR DTOS Y HABILITAR EL PREAUTHORIZE
-    //@PreAuthorize("hasRole('USER')")
-    @SecurityRequirement(name = "Authorization")
+    @PreAuthorize("hasRole('USER')")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "400", description = "Bad Request"),
@@ -117,6 +119,7 @@ public class DelitoController {
             summary = "Consultar un delito",
             description = "Endpoint para consultar un delito por ID"
     )
+    @SecurityRequirement(name = "Authorization")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{id}")
     public ResponseEntity<Delito> getOne(
@@ -127,7 +130,7 @@ public class DelitoController {
                 .body(delitoService.consultarDelitoPorID(id));
     }
 
-
+    @PreAuthorize("hasRole('USER')")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "401", description = "Unauthorized"),
@@ -138,10 +141,11 @@ public class DelitoController {
             summary = "Consultar todos los delitos",
             description = "Endpoint para consultar todos los delitos"
     )
+    @SecurityRequirement(name = "Authorization")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public ResponseEntity<Object> index() throws RestException {
-        return ResponseEntity
+    public ResponseEntity<List<Delito>> index() throws RestException {
+         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(delitoService.consultarDelitos());
     }
