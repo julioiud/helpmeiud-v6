@@ -26,7 +26,7 @@ public class UsuarioMapper {
         return usuario;
     }
 
-    public UsuarioResponseDTO usuarioResponseDTO(Usuario usuario){
+    public UsuarioResponseDTO toUsuarioResponseDTO(Usuario usuario){
         return UsuarioResponseDTO.builder()
                 .id(usuario.getId())
                 .username(usuario.getUsername())

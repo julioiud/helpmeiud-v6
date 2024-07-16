@@ -12,13 +12,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -126,7 +124,7 @@ public class DelitoController {
             @PathVariable(value = "id") Long id
     ) throws RestException {
         return ResponseEntity
-                .status(HttpStatus.OK)
+                .ok()
                 .body(delitoService.consultarDelitoPorID(id));
     }
 
@@ -146,7 +144,7 @@ public class DelitoController {
     @GetMapping
     public ResponseEntity<List<Delito>> index() throws RestException {
          return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(delitoService.consultarDelitos());
+                .ok()
+                 .body(delitoService.consultarDelitos());
     }
 }

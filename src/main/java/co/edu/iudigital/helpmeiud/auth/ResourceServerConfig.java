@@ -42,7 +42,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 		.antMatchers(HttpMethod.POST, "/usuarios/signup**").permitAll()
 		.antMatchers(HttpMethod.OPTIONS, "/usuarios/signup**").permitAll()	
 		
-		.antMatchers(HttpMethod.GET, "/casos", "/casos/caso/**").permitAll()
+		.antMatchers(HttpMethod.GET, "/casos", "/casos/visibles/**").permitAll()
 		// nivel 2: AUTORIZACIONES ESPECÍFICAS (SOBREESCRIBE LA GENÉRICA CORRESPONDIENTE)
 		.antMatchers(HttpMethod.GET, "/usuarios/uploads/img/**").permitAll()
 		//.antMatchers(HttpMethod.POST, "/usuarios/upload").hasAnyRole("USER", "ADMIN")

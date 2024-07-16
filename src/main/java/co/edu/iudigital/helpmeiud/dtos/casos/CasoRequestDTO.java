@@ -1,5 +1,6 @@
 package co.edu.iudigital.helpmeiud.dtos.casos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,9 +32,6 @@ public class CasoRequestDTO implements Serializable {
     String urlMapa;
 
     String rmiUrl;
-
-    @NotNull(message = "usuario ID requerido")
-    Long usuarioId;
 
     @NotNull(message = "delito Id requerido")
     Long delitoId;

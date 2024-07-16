@@ -18,6 +18,7 @@ import co.edu.iudigital.helpmeiud.utils.Messages;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -92,8 +93,9 @@ public class CasoServiceImpl implements ICasoService {
     }
 
     @Override
-    public CasoResponseDTO guardarCaso(final CasoRequestDTO caso) throws RestException {
+    public CasoResponseDTO guardarCaso(final CasoRequestDTO caso, Authentication authentication) throws RestException {
         log.info("consultarCasos CasoServiceImpl");
+        String username = authentication.getName();
         final Delito delitoBD = delitoRepository.findById(caso.getDelitoId())
                 .orElseThrow(() ->
                         new NotFoundException(
@@ -104,7 +106,17 @@ public class CasoServiceImpl implements ICasoService {
                                         .date(LocalDateTime.now())
                                         .build())
                 );
-        final Usuario usuarioDB = usuarioRepository.findById(caso.getUsuarioId())
+        Usuario usuarioDB = usuarioRepository.findByUsername(username);
+        if(usuarioDB == null ) {
+            throw new NotFoundException(
+                    ErrorDto.builder()
+                            .error("Usuario No encontrado")
+                            .message("Usuario No existe")
+                            .status(404)
+                            .date(LocalDateTime.now())
+                            .build());
+        }
+        /*final Usuario usuarioDB = usuarioRepository.findById(caso.getUsuarioId())
                 .orElseThrow(() -> {
                     log.warn("Error al consultar Usuario");
                             return new NotFoundException(
@@ -114,7 +126,8 @@ public class CasoServiceImpl implements ICasoService {
                                             .status(404)
                                             .date(LocalDateTime.now())
                                             .build());
-                });
+                });*/
+
         try{
             // TODO: LLEVAR A MAPPER
             Caso casoEntity = new Caso();
