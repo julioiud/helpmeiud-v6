@@ -44,7 +44,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 		
 		.antMatchers(HttpMethod.GET, "/casos", "/casos/visibles/**").permitAll()
 		// nivel 2: AUTORIZACIONES ESPECÍFICAS (SOBREESCRIBE LA GENÉRICA CORRESPONDIENTE)
-		.antMatchers(HttpMethod.GET, "/usuarios/uploads/img/**").permitAll()
+		.antMatchers(HttpMethod.GET, "/usuarios/upload/img/**").permitAll()
 		//.antMatchers(HttpMethod.POST, "/usuarios/upload").hasAnyRole("USER", "ADMIN")
 		//.antMatchers(HttpMethod.DELETE, "/delitos/delito/{id}").hasRole("ADMIN")
 		// nivel 1: genéricas

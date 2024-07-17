@@ -13,10 +13,10 @@ import co.edu.iudigital.helpmeiud.repositories.IUsuarioRepository;
 import co.edu.iudigital.helpmeiud.services.ifaces.IEmailService;
 import co.edu.iudigital.helpmeiud.services.ifaces.IUsuarioService;
 import co.edu.iudigital.helpmeiud.utils.UsuarioMapper;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -30,10 +30,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -139,9 +139,9 @@ public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
         usuario.setApellido(usuarioRequestUpdateDTO.getApellido()!=null ? usuarioRequestUpdateDTO.getApellido() : usuario.getApellido());
         usuario.setPassword(usuarioRequestUpdateDTO.getPassword()!=null ? usuarioRequestUpdateDTO.getPassword() : usuario.getPassword());
         usuario.setFechaNacimiento(usuarioRequestUpdateDTO.getFechaNacimiento()!=null ? usuarioRequestUpdateDTO.getFechaNacimiento() : usuario.getFechaNacimiento());
-        usuario.setImage(usuarioRequestUpdateDTO.getImage()!=null ? usuarioRequestUpdateDTO.getImage() : usuario.getImage());
 
         usuario = usuarioRepository.save(usuario); // TODO: COLOCAR EL TRY-CATCH
+
         return usuarioMapper.toUsuarioResponseDTO(usuario);
     }
 
@@ -149,6 +149,7 @@ public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
     public UsuarioResponseDTO subirImagen(MultipartFile image, Authentication authentication) throws RestException {
         Usuario usuario = usuarioRepository.findByUsername(authentication.getName());
         if(!image.isEmpty()) {
+            // TODO: VALIDAR FORMATO DE IMAGEN: jpg, png, jpeg,
             String nombreImage = UUID
                     .randomUUID()
                     .toString()
@@ -173,7 +174,7 @@ public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
 
             String imageAnterior = usuario.getImage();
 
-            if(imageAnterior != null && imageAnterior.length() > 0 && !imageAnterior.startsWith("nombreImage")){
+            if(imageAnterior != null && imageAnterior.length() > 0 && !imageAnterior.startsWith("http")){
                 Path pathAnterior = Paths.get("uploads").resolve(imageAnterior).toAbsolutePath();
                 File fileAnterior = pathAnterior.toFile();
                 if(fileAnterior.exists() && fileAnterior.canRead()) {
@@ -187,6 +188,22 @@ public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
 
         }
         return usuarioMapper.toUsuarioResponseDTO(usuario);
+    }
+
+    @Override
+    public Resource obtenerImagen(String name) throws RestException {
+        Path path = Paths.get("uploads").resolve(name).toAbsolutePath();
+        Resource resource = null;
+        try {
+            resource = new UrlResource(path.toUri());
+            if(!resource.exists()) {
+                path = Paths.get("uploads").resolve("default.jpg").toAbsolutePath();
+                resource = new UrlResource(path.toUri());
+            }
+        } catch (MalformedURLException e) {
+            log.error(e.getMessage());
+        }
+        return resource;
     }
 
 

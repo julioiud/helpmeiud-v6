@@ -10,6 +10,7 @@ import lombok.experimental.FieldDefaults;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
@@ -31,6 +32,7 @@ public class UsuarioRequestDTO implements Serializable {
 
     String apellido;
 
+    //@Pattern(regexp = "", message = "La contraseña debe contener...") para expresiones regulares
     String password;
 
     @JsonProperty("fecha_nacimiento")

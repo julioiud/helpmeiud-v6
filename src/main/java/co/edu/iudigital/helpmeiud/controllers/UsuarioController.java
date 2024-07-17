@@ -12,8 +12,11 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -133,5 +136,36 @@ public class UsuarioController {
                 .status(HttpStatus.CREATED)
                 .body(usuarioService.subirImagen(image, authentication));
     }
+
+    //@PreAuthorize("hasRole('USER')")
+  //  @SecurityRequirement(name = "Authorization")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "400", description = "Bad Request"),
+                    @ApiResponse(responseCode = "500", description = "Internal Error Server"),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized"),
+                    @ApiResponse(responseCode = "403", description = "Forbidden")
+            }
+    )
+    @Operation(
+            summary = "Ver foto de perfil",
+            description = "Endpoint para obtener foto de perfil de usuario autenticado"
+    )
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/upload/img/{name:.+}")
+    public ResponseEntity<Resource> getImage(
+            @PathVariable String name
+    ) throws RestException {
+        log.info("getImage de UsuarioController");
+        Resource resource = usuarioService.obtenerImagen(name);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename="+ resource.getFilename());
+        return new ResponseEntity<>(resource, headers, HttpStatus.OK);
+        /*return ResponseEntity
+                .ok()
+                .headers(headers)
+                .body(resource);*/
+    }
+
 
 }
